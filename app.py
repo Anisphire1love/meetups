@@ -7,9 +7,10 @@ from flask_login import (LoginManager, current_user, login_required,
 
 from models import Event, Profile, User, db
 
-app = Flask(__name__)
-app.config["SECRET_KEY"] = "change-me-in-production"
+app = Flask(__name__, instance_relative_config=True)
+app.config["SECRET_KEY"] = "dev-only-key"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///meetups.db"
+app.config.from_pyfile("config.py", silent=True)
 
 db.init_app(app)
 login_manager = LoginManager(app)
@@ -24,7 +25,7 @@ def load_user(user_id):
 
 @app.route("/")
 def index():
-    q =request.args.get("q", "").strip()
+    q = request.args.get("q", "").strip()
     location = request.args.get("location", "").strip()
     when = request.args.get("when", "upcoming")
     if when not in ("upcoming", "past", "all"):
