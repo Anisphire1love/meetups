@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Регистрация — {{ super() }}{% endblock %}
+{% block content %}
+<h1>Регистрация</h1>
+<form method="post">
+  <label>Логин<input name="username" required minlength="3" value="{{ request.form.get('username', '') }}"></label>
+  <label>Имя (отображается в списке гостей)<input name="full_name" value="{{ request.form.get('full_name', '') }}"></label>
+  <label>Пароль (от 6 символов)<input type="password" name="password" required minlength="6"></label>
+  <button>Создать аккаунт</button>
+</form>
+{% endblock %}

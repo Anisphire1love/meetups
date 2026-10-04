@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Афиша мероприятий{% endblock %}
+{% block content %}
+<h1>Афиша мероприятий</h1>
+<form method="get" class="filters">
+  <label>Поиск<input name="q" value="{{ q }}" placeholder="Название или описание"></label>
+  <label>Место<input name="location" value="{{ location }}"></label>
+  {% set options = [('upcoming', 'Предстоящие'), ('past', 'Прошедшие'), ('all', 'Все')] %}
+  <div class="field">
+    <span class="label">Когда</span>
+    <div class="dropdown">
+      <input type="hidden" name="when" value="{{ when }}">
+      <button type="button" class="dd-toggle">
+        <span class="dd-current">{{ dict(options).get(when, 'Предстоящие') }}</span><span class="dd-arrow">▾</span>
+      </button>
+      <ul class="dd-menu">
+        {% for value, label in options %}
+          <li data-value="{{ value }}" class="{{ 'active' if value == when }}">{{ label }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <button>Найти</button>
+</form>
+<script>
+  document.querySelectorAll('.dropdown').forEach(function (dd) {
+    var input = dd.querySelector('input'), cur = dd.querySelector('.dd-current');
+    dd.querySelector('.dd-toggle').addEventListener('click', function (e) {
+      e.stopPropagation(); dd.classList.toggle('open');
+    });
+    dd.querySelectorAll('li').forEach(function (li) {
+      li.addEventListener('click', function () {
+        input.value = li.dataset.value; cur.textContent = li.textContent;
+        dd.querySelectorAll('li').forEach(function (x) { x.classList.remove('active'); });
+        li.classList.add('active'); dd.classList.remove('open');
+      });
+    });
+    document.addEventListener('click', function () { dd.classList.remove('open'); });
+  });
+</script>
+{% for e in events %}
+  {% include "_event_card.html" %}
+{% else %}
+  <p class="muted">Ничего не найдено.</p>
+{% endfor %}
+{% endblock %}

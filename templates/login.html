@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Вход — {{ super() }}{% endblock %}
+{% block content %}
+<h1>Вход</h1>
+<form method="post">
+  <label>Логин<input name="username" required value="{{ request.form.get('username', '') }}"></label>
+  <label>Пароль<input type="password" name="password" required></label>
+  <button>Войти</button>
+</form>
+{% endblock %}

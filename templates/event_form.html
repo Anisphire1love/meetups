@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Редактирование' if event else 'Новое мероприятие' }} — {{ super() }}{% endblock %}
+{% block content %}
+<h1>{{ 'Редактирование' if event else 'Новое мероприятие' }}</h1>
+<form method="post">
+  <label>Название<input name="title" required value="{{ request.form.get('title', event.title if event else '') }}"></label>
+  <label>Описание<textarea name="description" rows="4">{{ request.form.get('description', event.description if event else '') }}</textarea></label>
+  <label>Дата и время<input type="datetime-local" name="date" required
+    value="{{ request.form.get('date', event.date.strftime('%Y-%m-%dT%H:%M') if event else '') }}"></label>
+  <label>Место<input name="location" required value="{{ request.form.get('location', event.location if event else '') }}"></label>
+  <label>Лимит мест (необязательно)<input type="number" min="1" name="capacity" value="{{ request.form.get('capacity', (event.capacity or '') if event else '') }}"></label>
+  <button>Сохранить</button>
+</form>
+{% endblock %}

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Афиша{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="layout">
+{# реклама слева #}
+<aside class="ad">
+  <a class="ad-card" href="https://isu.ru" target="_blank" rel="noopener sponsored">
+    <span class="ad-tag">Реклама</span>
+    <span class="ad-title">Иркутский государственный университет</span>
+    <span class="ad-text">Классическое университетское образование в сердце Сибири. С 1918 года.</span>
+    <span class="ad-btn">Узнать больше</span>
+  </a>
+</aside>
+<div class="wrap">
+<nav>
+  <a class="brand" href="{{ url_for('index') }}">Афиша</a>
+  <span class="spacer"></span>
+  {% if current_user.is_authenticated %}
+    <a href="{{ url_for('create_event') }}">+ Создать</a>
+    <a href="{{ url_for('my_events') }}">Мои события</a>
+    <span class="muted">{{ current_user.username }}</span>
+    <form method="post" action="{{ url_for('logout') }}"><button>Выйти</button></form>
+  {% else %}
+    <a href="{{ url_for('login') }}">Вход</a>
+    <a href="{{ url_for('register') }}">Регистрация</a>
+  {% endif %}
+</nav>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    <div class="flash {{ category }}">{{ message }}</div>
+  {% endfor %}
+{% endwith %}
+<main>{% block content %}{% endblock %}</main>
+</div>
+{# реклама справа #}
+<aside class="ad">
+  <a class="ad-card" href="https://isu.ru" target="_blank" rel="noopener sponsored">
+    <span class="ad-tag">Реклама</span>
+    <span class="ad-title">Поступай в ИГУ</span>
+    <span class="ad-text">Бакалавриат, магистратура и аспирантура. Подробности о направлениях — на сайте isu.ru.</span>
+    <span class="ad-btn">isu.ru</span>
+  </a>
+</aside>
+</div>
+</body>
+</html>

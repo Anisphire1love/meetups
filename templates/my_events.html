@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Мои события — {{ super() }}{% endblock %}
+{% block content %}
+<h2>Я организатор</h2>
+{% for e in organized %}{% include "_event_card.html" %}{% else %}<p class="muted">Вы пока ничего не создали.</p>{% endfor %}
+<h2>Я участвую</h2>
+{% for e in attending %}{% include "_event_card.html" %}{% else %}<p class="muted">Вы пока никуда не записаны.</p>{% endfor %}
+{% endblock %}
